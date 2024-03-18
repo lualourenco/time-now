@@ -1,27 +1,41 @@
 function load() {
-    var msg = window.document.getElementById('msg');
-    var img = window.document.getElementById('image');
-    var data = new Date();
-    var hour = data.getHours();
-    var minute = data.getMinutes();
-    var formattedHour = hour < 10 ? '0' + hour : hour;
-    var formattedMinute = minute < 10 ? '0' + minute : minute;
-    msg.innerHTML = `It's ${formattedHour}:${formattedMinute}.`;
-
-    if (hour >= 0 && hour < 12) {
-        // Good Morning!
-        img.src = './photos/morning.jpg';
-        document.body.style.backgroundColor = '#e2cd9f';
-    } else if (hour >= 12 && hour < 18) {
-        // Good Afternoon!
-        img.src = './photos/afternoon.jpg';
-        document.body.style.backgroundColor = '#b9846f';
-    } else {
-        // Good evening!
-        img.src = './photos/evening.jpg';
-        document.body.style.backgroundColor = '#515154';
-    }
+    updateTime();
+    updateMessageAndImage();
 }
 
-window.onload = load;
+function updateTime() {
+    var currentTime = new Date();
+    var hours = currentTime.getHours();
+    var minutes = currentTime.getMinutes();
+    var seconds = currentTime.getSeconds();
+    var formattedTime = hours + ":" + minutes + ":" + seconds;
+    document.getElementById('current-time').innerText = formattedTime;
+}
 
+function updateMessageAndImage() {
+    var currentTime = new Date();
+    var hours = currentTime.getHours();
+    var msgElement = document.getElementById('msg');
+    var imageElement = document.getElementById('image');
+    var imageSrc = '';
+    var message = '';
+
+    if (hours >= 5 && hours < 12) {
+        message = 'Good morning!';
+        imageSrc = './photos/morning.jpg';
+    } else if (hours >= 12 && hours < 18) {
+        message = 'Good afternoon!';
+        imageSrc = './photos/afternoon.jpg';
+    } else {
+        message = 'Good evening!';
+        imageSrc = './photos/evening.jpg';
+    }
+
+    msgElement.innerText = message;
+    imageElement.innerHTML = '<img src="' + imageSrc + '" alt="' + message + '">';
+}
+
+// Atualizar a hora a cada segundo
+setInterval(function() {
+    updateTime();
+}, 1000);
